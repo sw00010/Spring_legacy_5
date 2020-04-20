@@ -5,6 +5,54 @@
   
 <mapper namespace="com.iu.s5.notice.NoticeDAO">
 	
+	<sql id="search">
+		like '%'||#{search}||'%'
+	</sql>
+	
+	<!-- 전체 글의 갯수 -->
+	<select id="boardCount" parameterType="com.iu.s5.board.page.Pager" resultType="java.lang.Long">
+		select count(num) from notice 
+		<where>
+			<if test="kind == 'bt'">
+				title <include refid="search"></include>
+			</if>
+			
+			<if test="kind == 'bw'">
+				writer <include refid="search"></include>
+			</if>
+		
+			<if test="kind == 'bc'">
+				contents <include refid="search"></include>
+			</if>
+		</where>
+		
+	</select>
+	
+	<select id="boardList" parameterType="com.iu.s5.board.page.Pager" resultType="com.iu.s5.notice.NoticeVO">
+		select * from
+			(select N.*, rownum R from
+				(select * from notice where 
+				<choose>
+					<when test="kind == 'bw'">
+						writer
+					</when>
+					
+					<when test="kind=='bt'">
+						title
+					</when>
+					<otherwise>
+						contents
+					</otherwise>
+				
+				</choose>
+				<include refid="search"></include> and num>=1 order by num desc) N)
+		where R between #{startRow} and #{lastRow}
+	</select>
+	
+	<select id="boardSelect" parameterType="java.lang.Long" resultType="com.iu.s5.notice.NoticeVO">
+		select * from notice where num=#{num}
+	</select>
+	
 	<insert id="boardWrite" parameterType="com.iu.s5.notice.NoticeVO">
 		insert into notice values(board_seq.nextval,#{title},#{writer},#{contents},sysdate,0)
 	</insert>
@@ -12,6 +60,14 @@
 	<delete id="boardDelete" parameterType="java.lang.Long">
 		delete notice where num=#{num}
 	</delete>
+	
+	<update id="boardUpdate" parameterType="com.iu.s5.notice.NoticeVO">
+		update notice set title=#{title}, contents=#{contents} where num=#{num}
+	</update>
+	
+	<update id="hitUpdate" parameterType="java.lang.Long">
+		update notice set hit = hit+1 where num=#{num}
+	</update>
 	
 
 
