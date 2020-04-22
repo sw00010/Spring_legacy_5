@@ -26,31 +26,31 @@
 		</choose>
 	</sql>
 	
-	<select id="memberCount" resultType="java.lang.Long" parameterType="com.iu.s5.member.memberPage.MemberPager">
+	<select id="memberCount" resultType="Long" parameterType="Pager">
 		select count(id) from member where 
 		<include refid="kind"></include>
 		<include refid="search"></include>
 	</select>
 	
-	<select id="memberList" resultType="com.iu.s5.member.MemberVO" parameterType="com.iu.s5.member.memberPage.MemberPager">
+	<select id="memberList" resultType="MemberVO" parameterType="Pager">
 		select * from member where 
 		<include refid="kind"></include>
 		<include refid="search"></include>
 	</select>
 	
-	<select id="memberLogin" parameterType="com.iu.s5.member.MemberVO" resultType="com.iu.s5.member.MemberVO">
+	<select id="memberLogin" parameterType="MemberVO" resultType="MemberVO">
 		select * from member where id=#{id} and pw=#{pw}
 	</select>
 	
-	<insert id="memberJoin" parameterType="com.iu.s5.member.MemberVO">
-		insert into member values(#{id}, #{pw}, #{name}, #{email}, #{phone}, #{age})
+	<insert id="memberJoin" parameterType="MemberVO">
+		insert into member values(#{name}, #{age}, #{id}, #{pw}, #{email}, #{phone})
 	</insert>
 	
-	<update id="memberUpdate" parameterType="com.iu.s5.member.MemberVO">
+	<update id="memberUpdate" parameterType="MemberVO">
 		update member set name=#{name}, email=#{email}, phone=#{phone}, age=#{age} where id=#{id}
 	</update>
 	
-	<delete id="memberDelete" parameterType="com.iu.s5.member.MemberVO">
+	<delete id="memberDelete" parameterType="MemberVO">
 		delete member where id=#{id}
 	</delete>
 

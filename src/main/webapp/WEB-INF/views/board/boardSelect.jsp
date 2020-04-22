@@ -26,6 +26,9 @@
 		<div>
 			<a href="./${board}Update?num=${vo.num}" class="btn btn-primary">Update</a> 
 			<a href="./${board}Delete?num=${vo.num}" class="btn btn-danger">Delete</a>
+			<c:if test="${board ne 'notice'}">
+				<a href="./${board}Reply?num=${vo.num}" class="btn btn-info">Reply</a>
+			</c:if>
 		</div>
 
 	</div>
