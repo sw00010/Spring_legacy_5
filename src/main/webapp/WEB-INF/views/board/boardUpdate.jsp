@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <c:import url="../template/boot.jsp"></c:import>
+<c:import url="../template/summer.jsp"></c:import>
 </head>
 <body>
 <c:import url="../template/header_sub.jsp"></c:import>
@@ -37,4 +38,11 @@
 		
 	</div>
 </body>
+
+<script type="text/javascript">
+	$("#contents").summernote({
+		height: 400
+	});
+
+</script>
 </html>

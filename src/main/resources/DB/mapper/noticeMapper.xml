@@ -5,6 +5,25 @@
   
 <mapper namespace="com.iu.s5.notice.NoticeDAO">
 	
+	<resultMap type="NoticeVO" id="selectResult">
+		<id column="num" property="num"/>
+		<result column="title" property="title"/>
+		<result column="writer" property="writer"/>
+		<result column="contents" property="contents"/>
+		<result column="regDate" property="regDate"/>
+		<result column="hit" property="hit"/>
+	
+		<collection property="boardFileVOs" javaType="List" ofType="BoardFileVO">
+			<id column="fileNum" property="fileNum"/>
+			<result column="fileName" property="fileName"/>
+			<result column="fileName" property="fileName"/>
+			<result column="oriName" property="oriName"/>
+			<result column="board" property="board"/>
+		
+		
+		</collection>
+	</resultMap>
+	
 	<sql id="search">
 		like '%'||#{search}||'%'
 	</sql>
@@ -49,8 +68,11 @@
 		where R between #{startRow} and #{lastRow}
 	</select>
 	
-	<select id="boardSelect" parameterType="Long" resultType="NoticeVO">
-		select * from notice where num=#{num}
+	<select id="boardSelect" parameterType="Long" resultMap="selectResult">
+		select N.*,F.*
+		from notice N left join boardFile F
+		on (N.num = F.num)
+		where N.num=#{num} and F.board=1
 	</select>
 	
 	<insert id="boardWrite" parameterType="NoticeVO">

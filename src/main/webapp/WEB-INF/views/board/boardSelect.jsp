@@ -22,6 +22,16 @@
 		<div class="panel panel-warning">
 			<div class="panel-heading">${vo.regDate}</div>
 		</div>
+		
+		<div>
+			<c:forEach items="${vo.boardFileVOs}" var="file">
+				<div>
+					<a href="../boardFile/fileDown?fileNum=${file.fileNum}&board=${file.board}">${file.oriName}</a>					
+								
+				</div>
+			</c:forEach>
+		
+		</div>
 
 		<div>
 			<a href="./${board}Update?num=${vo.num}" class="btn btn-primary">Update</a> 
