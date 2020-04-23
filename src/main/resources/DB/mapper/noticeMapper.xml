@@ -54,7 +54,7 @@
 	</select>
 	
 	<insert id="boardWrite" parameterType="NoticeVO">
-		insert into notice values(board_seq.nextval,#{title},#{writer},#{contents},sysdate,0)
+		insert into notice values(#{num},#{title},#{writer},#{contents},sysdate,0)
 	</insert>
 	
 	<delete id="boardDelete" parameterType="Long">
@@ -69,6 +69,10 @@
 		update notice set hit = hit+1 where num=#{num}
 	</update>
 	
+	<select id="boardNum" resultType="Long">
+	
+		select board_seq.nextval from dual
+	</select>
 
 
 </mapper>  

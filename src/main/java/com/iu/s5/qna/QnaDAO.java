@@ -25,7 +25,7 @@ public class QnaDAO implements BoardDAO {
 		return sqlSession.insert(NAMESPACE+"boardReply", boardVO);
 	}
 		
-	
+
 	
 	@Override
 	public long boardCount(Pager pager) throws Exception {

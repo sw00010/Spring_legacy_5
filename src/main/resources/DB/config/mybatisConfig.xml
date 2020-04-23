@@ -12,7 +12,7 @@
 			<typeAlias type="com.iu.s5.qna.QnaVO" alias="QnaVO"/>
 			<typeAlias type="com.iu.s5.member.memberFile.MemberFileVO" alias="MemberFileVO"/>
 			<typeAlias type="java.lang.String" alias="String"/>
-		
+			<typeAlias type="com.iu.s5.board.file.BoardFileVO" alias="BoardFileVO"/>
 		
 		</typeAliases>
 	

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.s5.board.BoardVO;
@@ -47,8 +48,8 @@ public class QnaController {
 	}
 	
 	@PostMapping("qnaWrite")
-	public ModelAndView boardWrite(QnaVO qnaVO,ModelAndView mv)throws Exception{
-		int result = qnaService.boardWrite(qnaVO);
+	public ModelAndView boardWrite(QnaVO qnaVO,ModelAndView mv,MultipartFile[] files)throws Exception{
+		int result = qnaService.boardWrite(qnaVO,files);
 		String msg = "Qna Write Fail";
 		
 		if(result>0) {

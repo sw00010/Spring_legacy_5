@@ -20,6 +20,11 @@ public class NoticeDAO implements BoardDAO {
 	private SqlSession sqlSession;
 	private final String NAMESPACE="com.iu.s5.notice.NoticeDAO.";
 	
+	public long boardNum()throws Exception{
+		return sqlSession.selectOne(NAMESPACE+"boardNum");
+	}
+	
+	
 	@Override
 	public long boardCount(Pager pager) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"boardCount", pager);

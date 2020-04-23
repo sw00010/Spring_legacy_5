@@ -21,7 +21,7 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
 	</bean>
 	
-			<!-- multi part -->
+			<!-- multi part -->	
  	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
 		
 		<!-- Encoding 설정 -->

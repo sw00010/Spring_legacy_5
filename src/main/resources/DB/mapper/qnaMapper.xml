@@ -37,7 +37,11 @@
 	</select>
 	
 	<insert id = "boardWrite" parameterType="QnaVO">
-		insert into qna values(board_seq.nextval,#{title},#{writer},#{contents},sysdate,0,board_seq.currval,0,0)
+		<selectKey keyProperty="num" order="BEFORE" resultType="Long">
+			select board_seq.nextval from dual;
+		</selectKey>
+	
+		insert into qna values(#{num},#{title},#{writer},#{contents},sysdate,0,#{num},0,0)
 	</insert>
 	
 	<select id="boardSelect" parameterType="Long" resultType="QnaVO">
@@ -61,6 +65,7 @@
 		)
 	
 	</insert>
+	
 	
 	
 	

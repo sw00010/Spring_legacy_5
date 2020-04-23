@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.s5.board.BoardVO;
@@ -71,8 +72,11 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value = "noticeWrite", method = RequestMethod.POST)
-	public ModelAndView boardWrite(NoticeVO noticeVO, ModelAndView mv)throws Exception{
-		int result = noticeService.boardWrite(noticeVO);
+	public ModelAndView boardWrite(NoticeVO noticeVO, ModelAndView mv, MultipartFile[] files)throws Exception{
+		
+
+		
+		int result = noticeService.boardWrite(noticeVO,files);
 		if(result>0) {
 			mv.setViewName("redirect:./noticeList");
 		}else {
