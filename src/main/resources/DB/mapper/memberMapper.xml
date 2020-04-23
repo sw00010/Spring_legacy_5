@@ -5,6 +5,22 @@
   
 <mapper namespace="com.iu.s5.member.MemberDAO">
 	
+	<resultMap type="MemberVO" id="loginResult">
+		<id column="id" property="id"/> <!-- Primary Key -->
+		<result column="pw" property="pw"/>
+		<result column="name" property="name"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="age" property="age"/>
+		<!-- 1개인 경우 1:1 -->	
+		<association property="memberFileVO" javaType="MemberFileVO">
+			<result column="fileName" property="fileName"/>
+			<result column="oriName" property="oriName"/>
+		
+		</association>	
+	</resultMap>
+	
+	
 	<sql id="search">
 		like '%'||#{search}||'%'
 	</sql>
@@ -33,14 +49,22 @@
 	</select>
 	
 	<select id="memberList" resultType="MemberVO" parameterType="Pager">
-		select * from member where 
+		select * from
+		(select M.*, rownum R from
+		(select * from member where 
 		<include refid="kind"></include>
-		<include refid="search"></include>
+		<include refid="search"></include>) M)
+		where R between #{startRow} and #{lastRow}	
 	</select>
 	
-	<select id="memberLogin" parameterType="MemberVO" resultType="MemberVO">
-		select * from member where id=#{id} and pw=#{pw}
+	<select id="memberLogin" parameterType="MemberVO" resultMap="loginResult">
+		Select M.*,F.fileName,F.oriName
+		from member M left join memberFile F
+		on (M.id = F.id)
+		where M.id = #{id} and M.pw=#{pw}
 	</select>
+	
+	
 	
 	<insert id="memberJoin" parameterType="MemberVO">
 		insert into member values(#{name}, #{age}, #{id}, #{pw}, #{email}, #{phone})
