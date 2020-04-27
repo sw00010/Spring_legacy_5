@@ -10,8 +10,8 @@
 
 </head>
 <body>
-<c:import url="../template/header.jsp"></c:import>
-
+<c:import url="../template/header_sub.jsp"></c:import>
+	
 	<div class="container">
 		<div class="row">
 			<form class="form-horizontal" action="./memberJoin" method="post" enctype="multipart/form-data">
@@ -19,6 +19,7 @@
 					<label class="control-label col-sm-2" for="id">ID:</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="id" value="${id}" placeholder="Enter ID" name="id">
+						<div id="check"></div>
 					</div>
 				</div>
 				
@@ -76,7 +77,39 @@
 
 
 
+<script type="text/javascript">
+	$("#id").blur(function() {
+		var id = $("#id").val();
+/* 		$.post("./memberIdCheck",{id : id},function(data){
+			if(data==1){
+				$("#check").empty();
+				$("#check").append("<font color='green'>멋진아이디네요!</font>");
+			}
+			else{
+				$("#check").empty();
+				$("#check").append("<font color='red'>중복아이디!</font>");
+			}
+		}) */
+		$.ajax({
+			type:"post",			//method 형식
+			url:"./memberIdCheck",	//URL주소
+			data :{
+				id:id				//parameter
+			},						
+			success:function(data){
+				alert(data);
+			},
+			error:function(){
+				alert("Error");
+			}
+		});
+		
+		
+	});
+	
 
+
+</script>
 
 
 </body>

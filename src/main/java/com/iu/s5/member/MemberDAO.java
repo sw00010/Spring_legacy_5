@@ -39,7 +39,12 @@ public class MemberDAO {
 	public int memberDelete(MemberVO memberVO)throws Exception{
 		return sqlSession.delete(NAMESPACE+"memberDelete", memberVO);
 	}
-	
+	public MemberVO memberIdCheck(MemberVO memberVO)throws Exception{
+		return sqlSession.selectOne(NAMESPACE+"memberIdCheck", memberVO);
+	}
+	public int memberDeletes(List<String> list)throws Exception{
+		return sqlSession.delete(NAMESPACE+"memberDeletes",list);
+	}
 	
 
 }

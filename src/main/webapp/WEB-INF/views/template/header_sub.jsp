@@ -19,8 +19,9 @@
         </ul>
       </li>
       <li><a href="${pageContext.request.contextPath}/notice/noticeList">NOTICE</a></li>
+      <li><a href="${pageContext.request.contextPath}/qna/qnaList">QnA</a></li>
       <li><a href="${pageContext.request.contextPath}/member/memberList">MEMBER LIST</a></li>
-      <li><a href="${pageContext.request.contextPath}/qna/qnaList">QNA List</a></li>
+      <li><a href="${pageContext.request.contextPath}/memo/memoList">MEMO LIST</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <c:if test="${empty member}">

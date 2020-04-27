@@ -52,15 +52,15 @@
 			(select N.*, rownum R from
 				(select * from notice where 
 				<choose>
-					<when test="kind == 'bw'">
-						writer
+					<when test="kind == 'bc'">
+						contents
 					</when>
 					
 					<when test="kind=='bt'">
 						title
 					</when>
 					<otherwise>
-						contents
+						writer
 					</otherwise>
 				
 				</choose>
@@ -72,7 +72,7 @@
 		select N.*,F.*
 		from notice N left join boardFile F
 		on (N.num = F.num)
-		where N.num=#{num} and F.board=1
+		where N.num=#{num}
 	</select>
 	
 	<insert id="boardWrite" parameterType="NoticeVO">

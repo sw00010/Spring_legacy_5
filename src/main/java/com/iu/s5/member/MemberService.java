@@ -43,6 +43,9 @@ public class MemberService {
 	public MemberVO memberLogin(MemberVO memberDTO)throws Exception{
 		return memberDAO.memberLogin(memberDTO);
 	}
+	public MemberVO memberIdCheck(MemberVO memberVO)throws Exception{
+		return memberDAO.memberIdCheck(memberVO);
+	}
 	
 	public int memberJoin(MemberVO memberVO,MultipartFile avatar,HttpSession session)throws Exception{
 		//HDD에 저장 resources/memberUpload/
@@ -77,6 +80,10 @@ public class MemberService {
 			result = fileSaver.deleteFile(memberFileVO.getFileName(), path);
 		}
 		return result;
+	}
+	
+	public int memberDeletes(List<String> list)throws Exception{
+		return memberDAO.memberDeletes(list);
 	}
 	
 

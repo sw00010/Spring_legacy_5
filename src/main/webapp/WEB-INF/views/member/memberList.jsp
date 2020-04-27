@@ -33,19 +33,23 @@
 		  </form>
 		</div>
 		
+		
+		<div id="result">
 		<table class="table table-hover">
 			<tr>
 				<td>ID</td>
 				<td>NAME</td>
 				<td>PHONE</td>
 				<td>EMAIL</td>
+				<td ><input type="checkbox" id="all"><button class="btn btn-danger" id="del">Delete</button></td>
 			</tr>
-			<c:forEach items="${list}" var="vo">
+			<c:forEach items="${list}" var="vo" varStatus="i">
 			<tr>
-				<td>${vo.id}</td>
+				<td id="id${i.index}">${vo.id}</td>
 				<td>${vo.name}</td>
 				<td>${vo.phone}</td>
 				<td>${vo.email}</td>
+				<td><input type="checkbox"  name="del" title="id${i.index}" id="${vo.id}" class="check"></td>
 			</tr>
 			</c:forEach>
 			
@@ -65,8 +69,78 @@
 			</c:if>
 			</ul>
 		</div>
+		</div>
 		
 	</div>
+	
+	<script type="text/javascript">
+			
+	
+		//-----------------------------------------------
+		$("#result").on("click","#all",function(){
+			$(".check").prop("checked",$(this).prop("checked"));
+			
+		});
+				
+		
+		//---------------------------------------------------
+		$("#result").on("click",".check",function(){
+			
+			var result=true;
+			$(".check").each(function(){
+				if(!$(this).prop("checked")){
+					result=false;
+				}
+			});
+			$("#all").prop("checked",result);
+		});
+		
+		
+		
+		//---------------------------------------------------
+		
+		$("#result").on("click","#del",function(){
+			
+			var ids = [];	//빈 배열 생성
+			$(".check").each(function() {
+				if($(this).prop("checked")){
+/* 					var id = $(this).attr("title");
+					alert($("#"+id).text()); */
+					ids.push($(this).attr("id"));					
+					
+					
+				}
+			});
+			//foreach 끝
+			$.ajax({
+				type:"get",
+				url:"./memberDeletes",
+				traditional : true,
+				data:{
+					ids:ids
+				},
+				success:function(data){
+					$.get("./memberLists",function(data){
+						console.log(data);
+						$("#result").html(data.trim());
+					});
+				}
+				
+				
+				
+			});
+		});
+	
+		
+		//---------------------------------------------------------
+		
+		
+		
+
+			
+
+	
+	</script>
 
 </body>
 </html>

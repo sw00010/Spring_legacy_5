@@ -1,5 +1,6 @@
 package com.iu.s5.notice;
 
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +74,7 @@ public class NoticeController {
 	
 	@RequestMapping(value = "noticeWrite", method = RequestMethod.POST)
 	public ModelAndView boardWrite(NoticeVO noticeVO, ModelAndView mv, MultipartFile[] files)throws Exception{
+		
 		
 
 		

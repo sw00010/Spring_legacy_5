@@ -1,5 +1,6 @@
 package com.iu.s5.member;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +31,21 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@GetMapping("memberLists")
+	public ModelAndView memberLists(Pager pager)throws Exception{
+		ModelAndView mv = new ModelAndView();
+		
+		List<MemberVO> ar = memberService.memberList(pager);
+		mv.addObject("list", ar);
+		mv.addObject("pager", pager);
+		mv.setViewName("member/memberLists");
+		
+		
+		return mv;
+		
+	}
+	
+	
 	@RequestMapping(value="memberList", method = RequestMethod.GET)
 	public ModelAndView memberList(Pager memberPager, ModelAndView mv)throws Exception{
 		List<MemberVO> ar = memberService.memberList(memberPager);
@@ -38,6 +55,21 @@ public class MemberController {
 		mv.setViewName("member/memberList");
 		
 		return mv;
+	}
+	@PostMapping("memberIdCheck")
+	public ModelAndView memberIdCheck(MemberVO memberVO)throws Exception{
+		memberVO = memberService.memberIdCheck(memberVO);
+		ModelAndView mv = new ModelAndView();
+		//null->가입이 가능 		1
+		//null이 아니면 중복된 아이디	0
+		int result = 0;
+		if(memberVO==null) {
+			result=1;
+		}
+		mv.addObject("result", result);
+		mv.setViewName("common/ajaxResult");
+		return mv;
+		
 	}
 	
 	@RequestMapping(value = "memberLogout")
@@ -166,6 +198,18 @@ public class MemberController {
 		MemberVO memberVO =(MemberVO)session.getAttribute("member");
 		memberService.fileDelete(memberVO.getId(),session);
 		return "redirect:./memberPage";
+	}
+	
+	@GetMapping("memberDeletes")
+	public ModelAndView memberDeletes(String[] ids)throws Exception{
+		//배열을 List로 변환
+		ModelAndView mv = new ModelAndView();
+		List<String> list = Arrays.asList(ids);
+		int result = memberService.memberDeletes(list);
+		mv.addObject("result", result);
+		mv.setViewName("common/ajaxResult");
+		
+		return mv;
 	}
 	
 }

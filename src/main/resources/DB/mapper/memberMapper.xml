@@ -77,6 +77,19 @@
 	<delete id="memberDelete" parameterType="MemberVO">
 		delete member where id=#{id}
 	</delete>
-
+	
+	<delete id="memberDeletes" parameterType="List">
+		delete member where id in
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	
+	</delete>
+	
+	
+	<select id="memberIdCheck" parameterType="MemberVO" resultType="MemberVO">
+		select id from member where id=#{id}
+	
+	</select>
 
 </mapper>  
