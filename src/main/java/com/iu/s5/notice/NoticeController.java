@@ -46,14 +46,16 @@ public class NoticeController {
 	@RequestMapping(value = "noticeUpdate", method = RequestMethod.GET)
 	public String boardUpdate(long num, Model model)throws Exception{
 		 BoardVO boardVO = noticeService.boardSelect(num);
+		 NoticeVO noticeVO = (NoticeVO)boardVO;
+		 model.addAttribute("size", noticeVO.getBoardFileVOs().size());
 		 model.addAttribute("vo", boardVO);
 		return "board/boardUpdate";
 	}
 	
 	@RequestMapping(value = "noticeUpdate", method = RequestMethod.POST)
-	public String boardUpdate(NoticeVO noticeVO)throws Exception{
-		 
-		int result = noticeService.boardUpdate(noticeVO);
+	public String boardUpdate(NoticeVO noticeVO,MultipartFile[] files)throws Exception{
+	
+		int result = noticeService.boardUpdate(noticeVO,files);
 		String path="";
 		
 		if(result>0) {

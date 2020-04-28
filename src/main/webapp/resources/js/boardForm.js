@@ -5,6 +5,8 @@
 //$("선택자").action();
 		
 		var count =1;
+		
+		
 		$("#file").on("click",".remove",function(){
 			$(this).parent().remove();
 			count--;
@@ -15,7 +17,7 @@
 			height : 400
 
 		});
-		
+	
 		
 		$("#add").click(function() {
 			if(count<6){
@@ -60,3 +62,18 @@
 			}
 
 		});
+		
+		// onImageUpload callback
+//		$('#contents').summernote({
+//			height :300,
+//			callbacks: {
+//		    onImageUpload: function(file) {
+//		    	console.log("upload");
+//		   		$summernote.summernote('insertNode', imgNode);
+//		    }
+//		  }
+//		});		
+		
+		
+		
+		

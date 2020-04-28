@@ -29,10 +29,10 @@ public class BoardFileController {
 	}
 	
 	@PostMapping("fileDelete")
-	public ModelAndView fileDelete(long fileNum)throws Exception{
+	public ModelAndView fileDelete(BoardFileVO boardFileVO)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		System.out.println(fileNum);
-		int result = boardFileService.fileDelete(fileNum);
+		System.out.println(boardFileVO.getFileNum());
+		int result = boardFileService.fileDelete(boardFileVO);
 		mv.addObject("result", result);
 		mv.setViewName("common/ajaxResult");
 		return mv;
