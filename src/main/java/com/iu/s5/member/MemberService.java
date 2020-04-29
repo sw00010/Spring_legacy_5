@@ -18,12 +18,15 @@ public class MemberService {
 	
 	@Autowired
 	private MemberDAO memberDAO;
-	
 	@Autowired
 	private FileSaver fileSaver;
-	
 	@Autowired
 	private MemberFileDAO memberFileDAO;
+	
+	
+	public MemberVO memberIdCheck(MemberVO memberVO)throws Exception{
+		return memberDAO.memberIdCheck(memberVO);
+	}
 	
 	public List<MemberVO> memberList(Pager memberPager)throws Exception{
 		memberPager.makeRow();
@@ -43,14 +46,10 @@ public class MemberService {
 	public MemberVO memberLogin(MemberVO memberDTO)throws Exception{
 		return memberDAO.memberLogin(memberDTO);
 	}
-	public MemberVO memberIdCheck(MemberVO memberVO)throws Exception{
-		return memberDAO.memberIdCheck(memberVO);
-	}
 	
-	public int memberJoin(MemberVO memberVO,MultipartFile avatar,HttpSession session)throws Exception{
+	public int memberJoin(MemberVO memberVO, MultipartFile avatar, HttpSession session)throws Exception{
 		//HDD에 저장 resources/memberUpload/
-		
-		//1.파일을 HDD에 저장
+		//1. 파일을 HDD 에 저장
 		
 		String path = session.getServletContext().getRealPath("/resources/memberUpload");
 		System.out.println(path);
@@ -61,18 +60,15 @@ public class MemberService {
 		memberFileVO.setFileName(fileName);
 		memberFileVO.setOriName(avatar.getOriginalFilename());
 		//2. 파일명을 DB에 저장
-		int result = memberDAO.memberJoin(memberVO);
-		System.out.println(memberVO.getId());
-		System.out.println(memberFileVO.getId());
-		result = memberFileDAO.fileInsert(memberFileVO);
 		
-		
-		return result; //memberDAO.memberJoin(memberVO);
+		 int result = memberDAO.memberJoin(memberVO);
+		 result = memberFileDAO.fileInsert(memberFileVO);
+		return result;//memberDAO.memberJoin(memberVO);
 	}
 	
+
 	
-	public int fileDelete(String id,HttpSession session)throws Exception{
-		
+	public int fileDelete(String id, HttpSession session)throws Exception{
 		MemberFileVO memberFileVO = memberFileDAO.fileSelect(id);
 		int result = memberFileDAO.fileDelete(id);
 		if(result>0) {
@@ -85,6 +81,5 @@ public class MemberService {
 	public int memberDeletes(List<String> list)throws Exception{
 		return memberDAO.memberDeletes(list);
 	}
-	
 
 }

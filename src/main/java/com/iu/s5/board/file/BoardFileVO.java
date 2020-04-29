@@ -1,11 +1,13 @@
 package com.iu.s5.board.file;
 
 public class BoardFileVO {
+	
 	private long fileNum;
 	private long num;
 	private String fileName;
 	private String oriName;
 	private int board;
+	
 	public long getFileNum() {
 		return fileNum;
 	}
@@ -38,5 +40,5 @@ public class BoardFileVO {
 	}
 	
 	
-	
+
 }

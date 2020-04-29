@@ -13,6 +13,7 @@ public class MemberVO {
 	private MemberFileVO memberFileVO;
 	
 	
+	
 	public MemberFileVO getMemberFileVO() {
 		return memberFileVO;
 	}

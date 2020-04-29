@@ -6,8 +6,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,16 +48,19 @@ public class NoticeController {
 	@RequestMapping(value = "noticeUpdate", method = RequestMethod.GET)
 	public String boardUpdate(long num, Model model)throws Exception{
 		 BoardVO boardVO = noticeService.boardSelect(num);
+		 model.addAttribute("vo", boardVO);
 		 NoticeVO noticeVO = (NoticeVO)boardVO;
 		 model.addAttribute("size", noticeVO.getBoardFileVOs().size());
-		 model.addAttribute("vo", boardVO);
+		 
 		return "board/boardUpdate";
 	}
 	
 	@RequestMapping(value = "noticeUpdate", method = RequestMethod.POST)
-	public String boardUpdate(NoticeVO noticeVO,MultipartFile[] files)throws Exception{
-	
-		int result = noticeService.boardUpdate(noticeVO,files);
+	public String boardUpdate(NoticeVO noticeVO, MultipartFile [] files)throws Exception{
+
+		
+		
+		int result = noticeService.boardUpdate(noticeVO, files);
 		String path="";
 		
 		if(result>0) {
@@ -75,12 +80,9 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value = "noticeWrite", method = RequestMethod.POST)
-	public ModelAndView boardWrite(NoticeVO noticeVO, ModelAndView mv, MultipartFile[] files)throws Exception{
-		
-		
-
-		
-		int result = noticeService.boardWrite(noticeVO,files);
+	public ModelAndView boardWrite(NoticeVO noticeVO,MultipartFile [] files, ModelAndView mv)throws Exception{
+		System.out.println(noticeVO.getTitle());
+		int result = noticeService.boardWrite(noticeVO, files);
 		if(result>0) {
 			mv.setViewName("redirect:./noticeList");
 		}else {

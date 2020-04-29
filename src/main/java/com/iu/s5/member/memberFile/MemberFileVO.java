@@ -6,8 +6,6 @@ public class MemberFileVO {
 	private String fileName;
 	private String oriName;
 	
-	
-	
 	public String getId() {
 		return id;
 	}
@@ -26,5 +24,7 @@ public class MemberFileVO {
 	public void setOriName(String oriName) {
 		this.oriName = oriName;
 	}
+	
+	
 
 }

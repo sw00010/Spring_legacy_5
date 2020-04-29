@@ -11,29 +11,27 @@ public class BoardFileDAO {
 
 	@Autowired
 	private SqlSession sqlSession;
+	private final String NAMESPACE="com.iu.s5.board.file.BoardFileDAO.";
 	
-	private final String NAMESPACE = "com.iu.s5.board.file.BoardFileDAO.";
 	
-	//fileInsert
-	public int fileInsert(BoardFileVO boardFileVO) throws Exception {
+	public BoardFileVO fileSelect(BoardFileVO boardFileVO)throws Exception{
+		return sqlSession.selectOne(NAMESPACE+"fileSelect", boardFileVO);
+	}
+	
+	public int fileInsert(BoardFileVO boardFileVO)throws Exception{
 		return sqlSession.insert(NAMESPACE+"fileInsert", boardFileVO);
 	}
 	
-	
-	//fileSelect
-	public BoardFileVO fileSelect(BoardFileVO boardFileVO)throws Exception{
-		return sqlSession.selectOne(NAMESPACE+"fileSelect",boardFileVO);
-	}
-
 	public int fileDelete(BoardFileVO boardFileVO)throws Exception{
 		return sqlSession.delete(NAMESPACE+"fileDelete", boardFileVO);
 	}
 	
-	public List<BoardFileVO> fileList(long num)throws Exception{
-		return sqlSession.selectList(NAMESPACE+"fileList",num);
-	}
-	
-	public int fileDeleteAll(long num)throws Exception{
+	public int fileDeleteAll(Long num)throws Exception{
 		return sqlSession.delete(NAMESPACE+"fileDeleteAll", num);
 	}
+	
+	public List<BoardFileVO> fileList(Long num)throws Exception{
+		return sqlSession.selectList(NAMESPACE+"fileList", num);
+	}
+	
 }

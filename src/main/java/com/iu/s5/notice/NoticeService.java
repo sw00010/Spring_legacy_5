@@ -20,25 +20,23 @@ import com.iu.s5.util.Pager;
 
 @Service
 public class NoticeService implements BoardService {
-
+	
 	@Autowired
 	private NoticeDAO noticeDAO;
 	@Autowired
-	private FileSaver filesaver;
-	
+	private FileSaver fileSaver;
 	@Autowired
 	private ServletContext servletContext;
-	
 	@Autowired
 	private BoardFileDAO boardFileDAO;
-	
+
 	@Override
 	public List<BoardVO> boardList(Pager pager) throws Exception {
-
+		
 		pager.makeRow();
 		long totalCount = noticeDAO.boardCount(pager);
 		pager.makePage(totalCount);
-
+		
 		return noticeDAO.boardList(pager);
 	}
 
@@ -50,21 +48,21 @@ public class NoticeService implements BoardService {
 	}
 
 	@Override
-	public int boardWrite(BoardVO boardVO, MultipartFile[] files) throws Exception {
+	public int boardWrite(BoardVO boardVO, MultipartFile [] files) throws Exception {
 		// TODO Auto-generated method stub
+		
 		String path = servletContext.getRealPath("/resources/uploadnotice");
 		System.out.println(path);
+		
 		//sequence 번호 받기
 		boardVO.setNum(noticeDAO.boardNum());
-		
 		//notice table insert
 		int result = noticeDAO.boardWrite(boardVO);
 		
-		for (MultipartFile file : files) {
+		for(MultipartFile file : files) {
 			if(file.getSize()>0) {
-				
 				BoardFileVO boardFileVO = new BoardFileVO();
-				String fileName = filesaver.saveByTransfer(file, path);
+				String fileName = fileSaver.saveByTransfer(file, path);
 				boardFileVO.setNum(boardVO.getNum());
 				boardFileVO.setFileName(fileName);
 				boardFileVO.setOriName(file.getOriginalFilename());
@@ -72,26 +70,26 @@ public class NoticeService implements BoardService {
 				boardFileDAO.fileInsert(boardFileVO);
 			}
 		}
-		return result;//noticeDAO.boardWrite(boardVO);
-	
+		return result;
 	}
 
 	@Override
-	public int boardUpdate(BoardVO boardVO,MultipartFile[] files) throws Exception {
+	public int boardUpdate(BoardVO boardVO, MultipartFile [] files) throws Exception {
+		
 		//HDD file save
 		String path = servletContext.getRealPath("/resources/uploadnotice");
 		System.out.println(path);
-		int result=noticeDAO.boardUpdate(boardVO);
-		for(MultipartFile file : files) {
-			if(file.getSize()>0) {
+		int result = noticeDAO.boardUpdate(boardVO);
+		for(MultipartFile multipartFile:files) {
+			 
+			if(multipartFile.getSize()>0) {
 				BoardFileVO boardFileVO = new BoardFileVO();
-				String fileName = filesaver.saveByTransfer(file, path);
-				boardFileVO.setFileName(fileName);
-				boardFileVO.setOriName(file.getOriginalFilename());
+				
+				boardFileVO.setFileName(fileSaver.saveByUtils(multipartFile, path));
+				boardFileVO.setOriName(multipartFile.getOriginalFilename());
 				boardFileVO.setNum(boardVO.getNum());
-				boardFileVO.setBoard(1);;
+				boardFileVO.setBoard(1);
 				result = boardFileDAO.fileInsert(boardFileVO);
-			
 			}
 		}
 		
@@ -103,15 +101,13 @@ public class NoticeService implements BoardService {
 		List<BoardFileVO> list = boardFileDAO.fileList(num);
 		//1. HDD에 해당 파일들을 삭제
 		String path = servletContext.getRealPath("/resources/uploadnotice");
-		for(BoardFileVO file :list) {
-			String fileName=file.getFileName();
-			filesaver.deleteFile(fileName, path);
+		System.out.println(path);
+		
+		for(BoardFileVO boardFileVO:list) {
+			fileSaver.deleteFile(boardFileVO.getFileName(), path);
 		}
 		
-		
-		
-		
-		//2. DB에 삭제 
+		//2. DB에 삭제
 		boardFileDAO.fileDeleteAll(num);
 		
 		return noticeDAO.boardDelete(num);

@@ -11,17 +11,17 @@
 <body>
 <c:import url="../template/header_sub.jsp"></c:import>
 	<div class="container">
-		<h1>${board} Reply Form</h1>
+		<h1>${board} reply Form</h1>
 		
 		
 		<form action="./${board}Reply" id="frm" method="post">
-			<input type="hidden" name="num" value="${num}">
+		  <input type="hidden" name="num" value="${num}">
 		  <div class="form-group">
 		    <label for="title">Title:</label>
 		    <input type="text" class="form-control" id="title" name="title">
 		  </div>
 		  <div class="form-group">
-		    <label for="writer">Writer:</label>
+		    <label for="Writer">Writer:</label>
 		    <input type="text" class="form-control" id="reply" name="writer">
 		  </div>
 		 <div class="form-group" >
@@ -32,7 +32,7 @@
 		  
 		  
 		  
-		  <input type="submit" id="btn" class="btn btn-default" value="Write">
+		  <input type="submit" id="btn" class="btn btn-default" value="write">
 		</form>
 		
 	</div>

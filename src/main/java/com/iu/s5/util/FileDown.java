@@ -18,50 +18,45 @@ import com.iu.s5.board.file.BoardFileVO;
 
 @Component
 public class FileDown extends AbstractView {
+	
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
 		BoardFileVO boardFileVO = (BoardFileVO)model.get("file");
-		String fileName = boardFileVO.getFileName();
-		
+		String fileNmae = boardFileVO.getFileName();
 		String path = "";
 		if(boardFileVO.getBoard()==1) {
-			path= "/resources/uploadnotice";
-		} else if(boardFileVO.getBoard()==2) {
-			path = "/resources/uploadqna";
-		}
-		
+			path="/resources/uploadnotice";
+		}else {
+			path="/resources/uploadqna";
+		} 
 		path = request.getSession().getServletContext().getRealPath(path);
 		
+		//1. HDD에서 파일을 읽을 준비
+		File file = new File(path, fileNmae);
 		
+		//2. 파일의 크기
+		response.setContentLength((int)file.length());
 		
-		
-		
-		//1. HDD에서 파일을 읽을 준비 
-		File file = new File(path, fileName);
-		
-		//2. 파일의 크기 
-		response.setContentLength((int) file.length());
-		
-		//3. 다운로드시 파일 이름 인코딩 
-		String downName =  URLEncoder.encode(boardFileVO.getOriName(),"UTF-8");
+		//3. 다운로드시 파일 이름 인코딩
+		String downName = URLEncoder.encode(boardFileVO.getOriName(), "UTF-8");
 		
 		//4. header 설정
 		response.setHeader("Content-disposition", "attachment;filename=\""+downName+"\"");
 		response.setHeader("Content-transfer-Encoding", "binary");
 		
-		//5.Stream 연결 후 전송
+		
+		//5. Stream 연결 후 전송
 		FileInputStream fi = new FileInputStream(file);
 		OutputStream os = response.getOutputStream();
 		
 		FileCopyUtils.copy(fi, os);
+		
 		os.close();
 		fi.close();
 		
 		
-		
-		
-		
 	}
+
 }

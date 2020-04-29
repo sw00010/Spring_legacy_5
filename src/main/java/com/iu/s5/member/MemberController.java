@@ -3,9 +3,7 @@ package com.iu.s5.member;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,20 +28,31 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@PostMapping("memberIdCheck")
+	public ModelAndView memberIdCheck(MemberVO memberVO)throws Exception{
+		ModelAndView mv = new ModelAndView();
+		memberVO = memberService.memberIdCheck(memberVO);
+		//null -> 가입 가능 1
+		//null 이 아니면 중복 0
+		int result=0;
+		if(memberVO == null) {
+			result = 1;
+		}
+		mv.addObject("result", result);
+		mv.setViewName("common/ajaxResult");
+		
+		return mv;
+	}
+	
 	@GetMapping("memberLists")
 	public ModelAndView memberLists(Pager pager)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		
 		List<MemberVO> ar = memberService.memberList(pager);
 		mv.addObject("list", ar);
 		mv.addObject("pager", pager);
 		mv.setViewName("member/memberLists");
-		
-		
 		return mv;
-		
 	}
-	
 	
 	@RequestMapping(value="memberList", method = RequestMethod.GET)
 	public ModelAndView memberList(Pager memberPager, ModelAndView mv)throws Exception{
@@ -55,21 +63,6 @@ public class MemberController {
 		mv.setViewName("member/memberList");
 		
 		return mv;
-	}
-	@PostMapping("memberIdCheck")
-	public ModelAndView memberIdCheck(MemberVO memberVO)throws Exception{
-		memberVO = memberService.memberIdCheck(memberVO);
-		ModelAndView mv = new ModelAndView();
-		//null->가입이 가능 		1
-		//null이 아니면 중복된 아이디	0
-		int result = 0;
-		if(memberVO==null) {
-			result=1;
-		}
-		mv.addObject("result", result);
-		mv.setViewName("common/ajaxResult");
-		return mv;
-		
 	}
 	
 	@RequestMapping(value = "memberLogout")
@@ -84,18 +77,10 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value= "memberJoin", method = RequestMethod.POST)
-	public ModelAndView memberJoin(MemberVO memberVO,MultipartFile avatar, ModelAndView mv,HttpSession session) throws Exception {
+	public ModelAndView memberJoin(MemberVO memberVO, MultipartFile avatar, ModelAndView mv, HttpSession session) throws Exception {
 		
 		
-		System.out.println("파일업로드 시 실제 이름 : "+avatar.getOriginalFilename());
-		System.out.println("파라미터 이름 : "+avatar.getName());
-		System.out.println("파일의 크기 : "+avatar.getSize());
-		System.out.println(avatar.getContentType());
-		
-		
-		
-		
-		int result = memberService.memberJoin(memberVO,avatar,session);
+		int result = memberService.memberJoin(memberVO, avatar, session);
 		String msg ="Member Join Fail";
 		if(result>0) {
 			msg = "Member Join Success";
@@ -109,26 +94,26 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value= "memberLogin")
-	public void memberLogin(@CookieValue(value="cId",required = false) String cId,ModelAndView mv) {
-//		mv.addObject("cId", cId);
+	public void memberLogin(@CookieValue(value = "cId", required = false) String cId, Model model) {
+		System.out.println(cId);
+		//model.addAttribute("cId", cId);
 	}
 	
 	@RequestMapping(value= "memberLogin", method = RequestMethod.POST)
-	public ModelAndView memberLogin(ModelAndView mv, MemberVO memberVO, HttpSession session,String remember, HttpServletResponse response) throws Exception {
-		Cookie cookie = new Cookie("cId", "");	 
-		if(remember!=null) {
-//			cookie = new Cookie("cId", memberVO.getId());
+	public ModelAndView memberLogin(ModelAndView mv,String remember, MemberVO memberVO, HttpSession session, HttpServletResponse response) throws Exception {
+		Cookie cookie = new Cookie("cId", "");
+		
+		if(remember != null) {
+			/* cookie = new Cookie("cId", memberVO.getId()); */
 			cookie.setValue(memberVO.getId());
 		}
 		
-//		cookie.setMaxAge(0);
-//		cookie.setValue(newValue);
+		/* cookie.setMaxAge(0); */
+		/* cookie.setValue(newValue); */
 		response.addCookie(cookie);
 		
-		
-		
 		 memberVO = memberService.memberLogin(memberVO);
-		
+		 System.out.println(memberVO);
 		 if(memberVO != null) {
 			 session.setAttribute("member", memberVO);
 			 mv.setViewName("redirect:../");
@@ -146,8 +131,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value= "memberPage")
-	public void memberPage(HttpSession session, Model model) throws Exception{
-		
+	public void memberPage() throws Exception {
+
 	}
 
 	
@@ -195,21 +180,28 @@ public class MemberController {
 	
 	@GetMapping("fileDelete")
 	public String fileDelete(HttpSession session)throws Exception{
-		MemberVO memberVO =(MemberVO)session.getAttribute("member");
-		memberService.fileDelete(memberVO.getId(),session);
+		MemberVO memberVO = (MemberVO)session.getAttribute("member");
+		memberService.fileDelete(memberVO.getId(), session);
 		return "redirect:./memberPage";
 	}
 	
 	@GetMapping("memberDeletes")
-	public ModelAndView memberDeletes(String[] ids)throws Exception{
+	public ModelAndView memberDeletes(String [] ids)throws Exception{
 		//배열을 List로 변환
 		ModelAndView mv = new ModelAndView();
 		List<String> list = Arrays.asList(ids);
 		int result = memberService.memberDeletes(list);
 		mv.addObject("result", result);
 		mv.setViewName("common/ajaxResult");
-		
 		return mv;
 	}
 	
 }
+
+
+
+
+
+
+
+

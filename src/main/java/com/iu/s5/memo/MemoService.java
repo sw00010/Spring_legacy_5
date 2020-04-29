@@ -9,7 +9,6 @@ import com.iu.s5.util.Pager;
 
 @Service
 public class MemoService {
-
 	@Autowired
 	private MemoDAO memoDAO;
 	
@@ -17,9 +16,8 @@ public class MemoService {
 		pager.makeRow();
 		return memoDAO.memoList(pager);
 	}
-	
-	public int memoInsert(MemoVO memoVO)throws Exception{
-		int result = memoDAO.memoInsert(memoVO);
-		return result;
-	}
+	public int memoInsert(MemoVO memoVO) throws Exception{
+		return memoDAO.memoInsert(memoVO);
+	} 
+
 }

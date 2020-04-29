@@ -15,11 +15,14 @@ public class MemoDAO {
 	private SqlSession sqlSession;
 	private final String NAMESPACE="com.iu.s5.memo.MemoDAO.";
 	
-	public List<MemoVO> memoList(Pager pager) throws Exception{
-		return sqlSession.selectList(NAMESPACE+"memoList",pager);
+	public List<MemoVO> memoList(Pager pager)throws Exception{
+		return sqlSession.selectList(NAMESPACE+"memoList", pager);
 	}
 	
-	public int memoInsert(MemoVO memoVO)throws Exception{
-		return sqlSession.insert(NAMESPACE+"memoInsert",memoVO);
-	}
- }
+	public int memoInsert(MemoVO memoVO) throws Exception{
+		return sqlSession.insert(NAMESPACE+"memoInsert", memoVO);
+	} 
+	
+	
+
+}

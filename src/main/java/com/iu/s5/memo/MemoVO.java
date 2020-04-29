@@ -3,15 +3,16 @@ package com.iu.s5.memo;
 import java.sql.Date;
 
 public class MemoVO {
-
-	private long num;
+	
+	private Long num;
 	private String writer;
 	private String contents;
 	private Date regDate;
-	public long getNum() {
+	
+	public Long getNum() {
 		return num;
 	}
-	public void setNum(long num) {
+	public void setNum(Long num) {
 		this.num = num;
 	}
 	public String getWriter() {
@@ -33,4 +34,6 @@ public class MemoVO {
 		this.regDate = regDate;
 	}
 	
+	
+
 }

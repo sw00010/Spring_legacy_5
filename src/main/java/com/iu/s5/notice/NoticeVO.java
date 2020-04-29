@@ -20,8 +20,8 @@ public class NoticeVO extends BoardVO {
 	}
 	
 	
+	
 	//private BoardVO boardVO
-//	
 //	private MultipartFile [] files;
 //
 //	public MultipartFile[] getFiles() {
@@ -31,4 +31,6 @@ public class NoticeVO extends BoardVO {
 //	public void setFiles(MultipartFile[] files) {
 //		this.files = files;
 //	}
+	
+	
 }

@@ -18,6 +18,8 @@ public class Pager {
 	private String search;
 	
 	public void makeRow() {
+		
+		//curPage로 DB에 일정한 수 조회
 		System.out.println("curPage : "+this.getCurPage());
 		this.startRow = (this.getCurPage()-1)*this.getPerPage()+1;
 		
@@ -33,6 +35,7 @@ public class Pager {
 			this.totalPage++;
 		}
 		//3. totalPage로 totalBlock 계산
+		//totalBlock 다음 출력의 여부, curBlock이 마지막 Block 여부
 		long perBlock=5L; //block Page 수
 		this.totalBlock = totalPage/perBlock;
 		if(totalPage%perBlock != 0) {
@@ -104,7 +107,7 @@ public class Pager {
 	}
 	public Integer getPerPage() {
 		if(this.perPage == null || this.perPage==0) {
-			this.perPage=10; 
+			this.perPage=10;
 		}
 		return perPage;
 	}

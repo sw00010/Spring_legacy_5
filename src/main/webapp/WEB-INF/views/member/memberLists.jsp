@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 		<table class="table table-hover">
 			<tr>
 				<td>ID</td>
 				<td>NAME</td>
 				<td>PHONE</td>
 				<td>EMAIL</td>
-				<td ><input type="checkbox" id="all"><button class="btn btn-danger" id="del">Delete</button></td>
+				<td> <input type="checkbox" id="checkAll"><button class="btn btn-danger" id="del">Delete</button> </td>
 			</tr>
 			<c:forEach items="${list}" var="vo" varStatus="i">
 			<tr>
@@ -15,7 +16,7 @@
 				<td>${vo.name}</td>
 				<td>${vo.phone}</td>
 				<td>${vo.email}</td>
-				<td><input type="checkbox"  name="del" title="id${i.index}" id="${vo.id}" class="check"></td>
+				<td> <input type="checkbox" name="del" title="id${i.index}" id="${vo.id}"  class="check"></td>
 			</tr>
 			</c:forEach>
 			
@@ -31,7 +32,7 @@
 				<li><a href="./memberList?curPage=${i}&kind=${pager.kind}&search=${pager.search}">${i}</a></li>
 			</c:forEach>
 			<c:if test="${pager.curBlock lt pager.totalBlock}">
-			<li><a href="./memberListList?curPage=${pager.lastNum+1}&kind=${pager.kind}&search=${pager.search}">다음</a></li>
+			<li><a href="./memberList?curPage=${pager.lastNum+1}&kind=${pager.kind}&search=${pager.search}">다음</a></li>
 			</c:if>
 			</ul>
 		</div>
